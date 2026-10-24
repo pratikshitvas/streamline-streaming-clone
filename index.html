@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08090c" />
+    <meta name="description" content="Streamline — stories worth staying in for." />
+    <title>Streamline — Stories worth staying in for</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+    <header class="topbar" id="topbar">
+      <a class="brand" href="#home" aria-label="Streamline home"><span class="brand-mark">S</span><span>streamline</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link is-active" href="#home" data-nav="home">Home</a>
+        <a class="nav-link" href="#series" data-nav="series">Series</a>
+        <a class="nav-link" href="#films" data-nav="films">Films</a>
+        <a class="nav-link" href="#my-list" data-nav="my-list">My List <span class="list-count" id="list-count">0</span></a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button search-trigger" id="search-trigger" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 4.2 4.2"></path></svg></button>
+        <label class="search-field" id="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 4.2 4.2"></path></svg><input id="search-input" type="search" placeholder="Titles, people, genres" autocomplete="off" aria-label="Search titles" /><kbd>ESC</kbd></label>
+        <button class="icon-button notification-button" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg><i></i></button>
+        <button class="profile-button" id="profile-button" aria-label="Switch profile"><span class="avatar">P</span><svg class="chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7 5 5 5-5"></path></svg></button>
+      </div>
+      <div class="profile-menu" id="profile-menu"><div class="profile-choice"><span class="avatar">P</span><span>Pratikshit</span><span class="check">✓</span></div><button>Manage profiles</button><button>Account settings</button><button>Sign out of Streamline</button></div>
+    </header>
+
+    <main id="home">
+      <section class="hero" id="hero" aria-labelledby="hero-title">
+        <div class="hero-image"></div><div class="hero-shade"></div>
+        <div class="hero-content">
+          <div class="hero-kicker"><span class="spark">✦</span> STREAMLINE ORIGINAL</div>
+          <div class="hero-wordmark"><span class="wordmark-small">A SERIES FROM THE EDGE OF EVERYTHING</span><h1 id="hero-title">THE<br /><em>LAST</em><br />LIGHT</h1></div>
+          <p class="hero-meta"><span class="match">98% Match</span><span>2026</span><span class="maturity">16+</span><span>1 Season</span><span class="uhd">4K UHD</span></p>
+          <p class="hero-description">When the stars begin to disappear, one quiet observatory becomes humanity’s last window into the unknown.</p>
+          <div class="hero-buttons"><button class="primary-button" id="hero-play"><span class="play-icon">▶</span> Play</button><button class="secondary-button" id="hero-info"><span class="info-icon">i</span> More Info</button><button class="hero-list-button" id="hero-list" aria-label="Add The Last Light to My List">＋</button></div>
+          <div class="hero-pager"><span class="pager-active"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="hero-side-label"><span>01</span><i></i><span>04</span></div>
+        <div class="volume-control"><button id="mute-button" aria-label="Mute trailer"><svg viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Z"></path><path d="M17 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"></path></svg></button><span>TRAILER</span><div class="volume-track"><i></i></div></div>
+      </section>
+
+      <section class="discovery-bar" aria-label="Browse titles"><div class="section-label"><span class="section-line"></span><span>YOUR NEXT OBSESSION</span></div><div class="filter-row" id="filters"><button class="filter-chip is-selected" data-filter="all">For you</button><button class="filter-chip" data-filter="Drama">Drama</button><button class="filter-chip" data-filter="Sci-Fi">Sci-Fi</button><button class="filter-chip" data-filter="Thriller">Thriller</button><button class="filter-chip" data-filter="Documentary">Documentary</button></div><button class="view-all" id="view-all">Explore all <span>↗</span></button></section>
+      <div id="catalog" class="catalog"></div>
+      <section class="membership-strip"><div><span class="strip-eyebrow">YOUR SCREEN. YOUR STORIES.</span><h2>Every night has a story.</h2><p>One membership. A universe of things to watch.</p></div><button class="secondary-button" id="membership-button">Explore membership <span>→</span></button><div class="strip-orbit orbit-a"></div><div class="strip-orbit orbit-b"></div></section>
+      <footer class="footer"><a class="brand footer-brand" href="#home"><span class="brand-mark">S</span><span>streamline</span></a><span>Stories worth staying in for.</span><span>© 2026 Streamline</span></footer>
+    </main>
+
+    <div class="modal" id="title-modal" aria-hidden="true"><button class="modal-scrim" data-close="true" aria-label="Close details"></button><article class="modal-card"><button class="modal-close" data-close="true" aria-label="Close">×</button><div class="modal-backdrop" id="modal-backdrop"><div class="modal-backdrop-shade"></div><button class="modal-play" id="modal-play"><span>▶</span> Play</button></div><div class="modal-body"><div class="modal-heading"><div><div class="modal-brand">S <span>STREAMLINE ORIGINAL</span></div><h2 id="modal-title">Title</h2></div><button class="modal-list" id="modal-list" aria-label="Add to My List">＋</button></div><div class="modal-facts" id="modal-facts"></div><p id="modal-description"></p><div class="modal-tags" id="modal-tags"></div><div class="episodes" id="episodes"></div></div></article></div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
