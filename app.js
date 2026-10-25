@@ -74,25 +74,36 @@ function updateModalList(){const button=$('#modal-list');if(!button)return;const
 function closeModal(){const modal=$('#title-modal');modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow=''}
 const sampleVideos=[
   {src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',credit:'CC0 sample footage'},
-  {src:'https://media.w3.org/2010/05/sintel/trailer.mp4',credit:'Sintel · Blender Foundation · CC BY 3.0'},
-  {src:'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',credit:'Big Buck Bunny · Blender Foundation · CC BY 3.0'}
+  {src:'https://media.w3.org/2010/05/sintel/trailer.mp4',credit:'Sintel · Blender Foundation · CC BY 3.0'}
 ];
+function startSampleVideo(player,index,muted=false){
+  const clip=sampleVideos[index];
+  player.dataset.sampleIndex=String(index);
+  $('#player-credit').textContent=clip.credit;
+  player.muted=muted;
+  player.src=clip.src;
+  player.load();
+  const playback=player.play();
+  if(playback?.catch)playback.catch(()=>showToast('Press play in the video controls to start the preview'));
+}
 function playTitle(id){
   const item=id==='featured'?getFeatured():titleById(id);
   if($('#title-modal').classList.contains('open'))closeModal();
-  const clip=sampleVideos[Math.floor(Math.random()*sampleVideos.length)];
   const player=$('#sample-video');
   $('#player-title').textContent=item?.name||'Streamline preview';
-  $('#player-credit').textContent=clip.credit;
-  player.src=clip.src;
-  player.load();
+  player.dataset.fallbackTried='false';
   const overlay=$('#player-overlay');
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden','false');
   document.body.style.overflow='hidden';
-  const playback=player.play();
-  if(playback?.catch)playback.catch(()=>showToast('Press play in the video controls to start the preview'));
+  startSampleVideo(player,Math.floor(Math.random()*sampleVideos.length));
 }
+$('#sample-video').addEventListener('error',event=>{
+  const player=event.currentTarget;
+  if(player.dataset.fallbackTried==='true')return;
+  player.dataset.fallbackTried='true';
+  startSampleVideo(player,(Number(player.dataset.sampleIndex)+1)%sampleVideos.length,true);
+});
 function closePlayer(){
   const overlay=$('#player-overlay');
   const player=$('#sample-video');
