@@ -72,7 +72,37 @@ function getFeatured(){return {id:'last-light',name:'The Last Light',image:art.s
 function openTitle(id){const item=id==='featured'?getFeatured():titleById(id);if(!item)return;$('#modal-title').textContent=item.name;$('#modal-backdrop').style.backgroundImage=`url("${item.image}")`;$('#modal-facts').innerHTML=`<span class="match">${item.match||90}% Match</span><span>${item.year}</span><span class="maturity">${item.rating||'13+'}</span><span>${item.length}</span><span class="uhd">4K UHD</span>`;$('#modal-description').textContent=item.description;$('#modal-tags').innerHTML=item.genre.map(tag=>`<span>${escapeHtml(tag)}</span>`).join('');$('#episodes').innerHTML=item.episodes?.length?`<h3>Episodes <span style="color:#92949d;font-size:10px;font-weight:400"> · Season 1</span></h3>${item.episodes.map((episode,index)=>`<div class="episode-row"><span class="episode-number">${index+1}</span><span><strong>${escapeHtml(episode)}</strong><br><span style="font-size:9px;color:#999">${42+index*3} min · A new chapter unfolds</span></span></div>`).join('')}`:'';$('#modal-play').dataset.play=item.id;$('#modal-list').dataset.list=item.id;updateModalList();const modal=$('#title-modal');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
 function updateModalList(){const button=$('#modal-list');if(!button)return;const id=button.dataset.list;button.textContent=watchlist.has(id)?'✓':'＋';button.setAttribute('aria-label',watchlist.has(id)?'Remove from My List':'Add to My List')}
 function closeModal(){const modal=$('#title-modal');modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-function playTitle(id){const item=id==='featured'?getFeatured():titleById(id);showToast(`Preview ready · ${item?.name||'Streamline'}`);}
+const sampleVideos=[
+  {src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',credit:'CC0 sample footage'},
+  {src:'https://media.w3.org/2010/05/sintel/trailer.mp4',credit:'Sintel · Blender Foundation · CC BY 3.0'},
+  {src:'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',credit:'Big Buck Bunny · Blender Foundation · CC BY 3.0'}
+];
+function playTitle(id){
+  const item=id==='featured'?getFeatured():titleById(id);
+  if($('#title-modal').classList.contains('open'))closeModal();
+  const clip=sampleVideos[Math.floor(Math.random()*sampleVideos.length)];
+  const player=$('#sample-video');
+  $('#player-title').textContent=item?.name||'Streamline preview';
+  $('#player-credit').textContent=clip.credit;
+  player.src=clip.src;
+  player.load();
+  const overlay=$('#player-overlay');
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  const playback=player.play();
+  if(playback?.catch)playback.catch(()=>showToast('Press play in the video controls to start the preview'));
+}
+function closePlayer(){
+  const overlay=$('#player-overlay');
+  const player=$('#sample-video');
+  player.pause();
+  player.removeAttribute('src');
+  player.load();
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
 function applyNav(nav){activeNav=nav;document.querySelectorAll('.nav-link').forEach(link=>link.classList.toggle('is-active',link.dataset.nav===nav));if(nav==='my-list'&&!watchlist.size)showToast('Your list is ready for a first pick');renderCatalog();if(nav==='home')window.scrollTo({top:0,behavior:'smooth'});else $('#catalog').scrollIntoView({behavior:'smooth',block:'start'})}
 
 $('#filters').addEventListener('click',event=>{const chip=event.target.closest('[data-filter]');if(!chip)return;activeFilter=chip.dataset.filter;document.querySelectorAll('.filter-chip').forEach(button=>button.classList.toggle('is-selected',button===chip));renderCatalog()});
@@ -80,7 +110,7 @@ document.querySelectorAll('.nav-link').forEach(link=>link.addEventListener('clic
 $('#catalog').addEventListener('click',event=>{const control=event.target.closest('[data-scroll]');if(control){control.closest('.catalog-row').querySelector('.card-track').scrollBy({left:Number(control.dataset.scroll)*410,behavior:'smooth'});return}const listButton=event.target.closest('[data-list]');if(listButton){event.stopPropagation();toggleWatchlist(listButton.dataset.list);return}const playButton=event.target.closest('[data-play]');if(playButton){event.stopPropagation();playTitle(playButton.dataset.play);return}const card=event.target.closest('[data-open]');if(card)openTitle(card.dataset.open)});
 $('#catalog').addEventListener('keydown',event=>{const card=event.target.closest('[data-open]');if(card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openTitle(card.dataset.open)}});
 $('#hero-play').addEventListener('click',()=>playTitle('featured'));$('#hero-info').addEventListener('click',()=>openTitle('featured'));$('#hero-list').addEventListener('click',()=>toggleWatchlist('last-light'));$('#modal-play').addEventListener('click',event=>playTitle(event.currentTarget.dataset.play));$('#modal-list').addEventListener('click',event=>toggleWatchlist(event.currentTarget.dataset.list));
-$('#title-modal').addEventListener('click',event=>{if(event.target.dataset.close)closeModal()});document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeModal();$('#search-field').classList.remove('open');$('#profile-menu').classList.remove('open')}});
+$('#title-modal').addEventListener('click',event=>{if(event.target.dataset.close)closeModal()});$('#player-overlay').addEventListener('click',event=>{if(event.target.dataset.playerClose)closePlayer()});$('#player-close').addEventListener('click',closePlayer);document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeModal();closePlayer();$('#search-field').classList.remove('open');$('#profile-menu').classList.remove('open')}});
 $('#search-trigger').addEventListener('click',()=>{const field=$('#search-field');field.classList.add('open');$('#search-input').focus()});$('#search-input').addEventListener('input',event=>{searchQuery=event.target.value.trim();renderCatalog();if(searchQuery)$('#catalog').scrollIntoView({behavior:'smooth',block:'start'})});$('#search-input').addEventListener('keydown',event=>{if(event.key==='Escape'){event.currentTarget.value='';searchQuery='';renderCatalog();$('#search-field').classList.remove('open')}});
 $('#profile-button').addEventListener('click',()=>$('#profile-menu').classList.toggle('open'));document.addEventListener('click',event=>{if(!event.target.closest('#profile-button')&&!event.target.closest('#profile-menu'))$('#profile-menu').classList.remove('open')});$('#view-all').addEventListener('click',()=>{activeFilter='all';activeNav='home';searchQuery='';$('#search-input').value='';document.querySelectorAll('.filter-chip').forEach(button=>button.classList.toggle('is-selected',button.dataset.filter==='all'));document.querySelectorAll('.nav-link').forEach(link=>link.classList.toggle('is-active',link.dataset.nav==='home'));renderCatalog();$('#catalog').scrollIntoView({behavior:'smooth'})});$('#membership-button').addEventListener('click',()=>showToast('Membership options are coming soon'));
 $('#mute-button').addEventListener('click',event=>{event.currentTarget.classList.toggle('muted');showToast(event.currentTarget.classList.contains('muted')?'Trailer muted':'Trailer sound on')});
