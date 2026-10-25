@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#08090c" />
+    <meta name="theme-color" content="#160914" />
     <meta name="description" content="Streamline — stories worth staying in for." />
     <title>Streamline — Stories worth staying in for</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -52,7 +52,7 @@
     </main>
 
     <div class="modal" id="title-modal" aria-hidden="true"><button class="modal-scrim" data-close="true" aria-label="Close details"></button><article class="modal-card"><button class="modal-close" data-close="true" aria-label="Close">×</button><div class="modal-backdrop" id="modal-backdrop"><div class="modal-backdrop-shade"></div><button class="modal-play" id="modal-play"><span>▶</span> Play</button></div><div class="modal-body"><div class="modal-heading"><div><div class="modal-brand">S <span>STREAMLINE ORIGINAL</span></div><h2 id="modal-title">Title</h2></div><button class="modal-list" id="modal-list" aria-label="Add to My List">＋</button></div><div class="modal-facts" id="modal-facts"></div><p id="modal-description"></p><div class="modal-tags" id="modal-tags"></div><div class="episodes" id="episodes"></div></div></article></div>
-    <div class="toast" id="toast" role="status"></div>
+    <div class="player-overlay" id="player-overlay" aria-hidden="true"><button class="player-scrim" data-player-close="true" aria-label="Close video preview"></button><section class="player-panel" role="dialog" aria-modal="true" aria-labelledby="player-title"><button class="player-close" id="player-close" aria-label="Close video">×</button><video id="sample-video" controls playsinline preload="metadata" aria-label="Random sample video preview"></video><div class="player-caption"><strong id="player-title">Streamline preview</strong><span id="player-credit">Demo footage</span></div></section></div>    <div class="toast" id="toast" role="status"></div>
     <script src="./app.js"></script>
   </body>
 </html>
